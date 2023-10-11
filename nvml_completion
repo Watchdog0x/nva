@@ -1,0 +1,74 @@
+# Make it executable (chmod +x nvml_completion)
+# Create a symbolic link to the completion script in the '/etc/bash_completion.d/' directory. This step requires sudo privileges:
+# sudo ln -sr nvml_completion /etc/bash_completion.d/
+
+_nvml_completion() {
+  local cur prev opts
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+  opts="-i --install -s --set -r --remove -h --help -l --list -p --patch"
+
+  local config_dir="$HOME/.config/nvml"
+  local cache_file="$config_dir/nvml_release_cache.txt"
+
+  # Check if the cache needs to be updated
+  local update_interval=86400  # Update every 24 hours
+  local current_time=$(date +%s)
+
+  [ -d "$config_dir" ] || mkdir -p "$config_dir"
+
+  if [ -e "$cache_file" ]; then
+    local last_update=$(stat -c %Y "$cache_file")
+    local time_diff=$((current_time - last_update))
+
+    if [ $time_diff -gt $update_interval ]; then
+      # Cache outdated, update it
+      releases=$(curl -s https://nodejs.org/download/release/ | grep -oP '^<a href="v\d{1,4}\.\d{1,4}\.\d{1,4}' | grep -oP '\d.*' | uniq)
+      echo "$releases" > "$cache_file"
+    else
+      releases=$(cat "$cache_file")
+    fi
+  else
+    # Cache doesn't exist, create it
+    releases=$(curl -s https://nodejs.org/download/release/ | grep -oP '^<a href="v\d{1,4}\.\d{1,4}\.\d{1,4}' | grep -oP '\d.*' | uniq)
+    echo "$releases" > "$cache_file"
+  fi
+
+  case "${prev}" in
+    -i|--install)
+      COMPREPLY=( $(compgen -W "${releases}" -- ${cur}) )
+      return 0
+      ;;
+    -r|--remove)
+      COMPREPLY=( $(compgen -W "$(find "nodejs" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | grep -oP '\d+(\.\d+){0,2}')" -- ${cur}) )
+      return 0
+      ;;
+    -s|--set)
+      COMPREPLY=( $(compgen -W "$(find "nodejs" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | grep -oP '\d+(\.\d+){0,2}')" -- ${cur}) )
+      return 0
+      ;;
+    -h|--help)
+      COMPREPLY=( $(compgen -W "" -- ${cur}) )
+      return 0
+      ;;
+    -l|--list)
+      COMPREPLY=( $(compgen -W "" -- ${cur}) )
+      return 0
+      ;;
+    -p|--patch)
+      if [[ "${cur}" != -* ]]; then
+        COMPREPLY=( $(compgen -W "clean" -- ${cur}) )
+        return 0
+      fi
+      ;;
+    *)
+      ;;
+  esac
+
+  COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+  return 0
+}
+
+complete -F _nvml_completion nvml
+
