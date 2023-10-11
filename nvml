@@ -1,0 +1,247 @@
+#!/usr/bin/env bash
+
+node_versions_dir="nodejs"
+cleanup="false"
+
+install_version=""
+set_version=""
+remove_version=""
+
+check_node_version(){
+    if [ -n "$(command -v node)" ]; then
+        current_version=$(node --version | grep -oP '\d.*')
+    fi
+}
+
+print_help() {
+    cat <<EOF
+Usage: nvml [OPTIONS]
+
+Options:
+  -i, --install        Install a specific Node.js version
+
+  -l, --list           List available Node.js versions on your system
+
+  -s, --set            Set the active Node.js version
+
+  -p, --patch          Update all installed Node.js versions to the latest
+                       Subcommands:
+                       clean: Remove all old Node.js versions
+
+  -r, --remove         Remove an installed Node.js version
+
+  -h, --help           Display this help message and exit
+
+EOF
+}
+
+install() {
+    if [ -e "$node_versions_dir/$install_version" ]; then
+        echo "Node.js version $install_version is already installed on your system."
+    else
+        local response_code=$(curl -sLI "https://nodejs.org/download/release/v$install_version/" | grep -i "^HTTP" | awk '{print $2}')
+        if [ "$response_code" -eq 200 ]; then
+            curl -sL "https://nodejs.org/download/release/v$install_version/node-v$install_version-linux-x64.tar.xz" -o "node-v$install_version-linux-x64.tar.xz"
+            if [ $? -eq 0 ]; then
+                echo "Node.js version $install_version downloaded successfully to $node_versions_dir"
+
+                mkdir -p "$node_versions_dir/$install_version"
+
+                tar -xf "node-v$install_version-linux-x64.tar.xz" -C "$node_versions_dir/$install_version" --strip-components=1
+
+                if [ $? -eq 0 ]; then
+                    echo "Node.js version $install_version extracted successfully"
+                    rm -r "node-v$install_version-linux-x64.tar.xz"
+                else
+                    echo "Failed to extract Node.js version $install_version"
+                fi
+            else
+                echo "Failed to download Node.js version $install_version"
+            fi
+        else 
+            echo "The version $install_version doesn't exist"
+        fi
+    fi
+}
+
+list(){
+    check_node_version
+    local local_versions=$(find "$node_versions_dir" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | grep -oP '\d+(\.\d+){0,2}')
+    if [ -n "$local_versions" ]; then
+    echo "Available Node.js versions installed on your system:"
+    for version in $local_versions; do
+            if [ "$current_version" = "$version" ]; then
+                echo "* Node.js $version (Running)"
+            else
+                echo "  Node.js $version"
+            fi
+        done
+    else
+        echo "No Node.js versions found in $node_versions_dir."
+        echo "You may want to install some using the nvml script."
+    fi
+
+}
+
+set_nodejs(){
+    if [ -n "$set_version" ] && [ -e "$node_versions_dir/$set_version" ]; then
+        if [ "$(id -u)" -eq 0 ]; then
+            ln -srf "$node_versions_dir/$set_version/bin/node" /usr/bin/node
+            ln -srf "$node_versions_dir/$set_version/bin/npx" /usr/bin/npx
+            ln -srf "$node_versions_dir/$set_version/bin/npm" /usr/bin/npm
+            npm config set prefix /usr/local
+            echo "Node.js version $set_version has been set successfully."
+        else
+            echo "Error: Insufficient privileges. Please run with sudo."
+            exit 1
+        fi
+    else
+        echo "Error: Node.js version $set_version does not exist in your system."
+        exit 1
+    fi
+}
+
+remove() {
+    check_node_version
+    if [ -e "$node_versions_dir/$set_version" ]; then
+        if [ "$remove_version" != "$current_version" ]; then
+            if [ -w "$node_versions_dir/$remove_version" ]; then
+                rm -rf "$node_versions_dir/$remove_version"
+                echo "Success: Node.js version $remove_version has been removed."
+            else
+                echo "Error: You do not have permission to remove Node.js version $remove_version."
+                echo "Check file permissions and try again or run with elevated privileges."
+            fi
+        else
+            echo "Info: Cannot remove the currently running Node.js version."
+            echo "Use 'nvml -s <other_version>' to set another version before removing the running version."
+        fi
+    else
+        echo "Error: The specified Node.js version ($remove_version) does not exist."
+        exit 1
+    fi
+}
+
+patch(){
+    check_node_version
+    echo "#### Running Patch ####"
+    local count_updates=0
+    local major_current_version=$(echo $current_version | grep -oP '^\d+')
+
+    local new_versions=$(curl -s https://nodejs.org/en/download/releases | grep -oP '<td.*?>Node\.js\s*<!--.*?-->\K\d+(\.\d+){0,2}' | grep -v '^$')
+
+    local local_versions=$(find "$node_versions_dir" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | grep -oP '^\d+')
+
+    local updates=()
+
+    # Check for updates by using the major version number 
+    for new_version in $new_versions; do 
+        major_new_version=$(echo $new_version | awk -F'.' '{print $1}')
+        for version in $local_versions; do
+            if [ "$major_new_version" = "$version" ]; then
+                updates+=("$new_version")
+            fi
+            if [ "$major_new_version" = "$major_current_version" ]; then
+                set_version="$new_version"
+            fi
+        done
+    done
+
+    # Remove duplicates
+    local new_nodejs_dir=($(echo "${updates[@]}" | tr ' ' '\n' | awk '!seen[$0]++' | tr '\n' ' '))
+
+    for install in "${new_nodejs_dir[@]}"; do
+        if [ -e "$node_versions_dir/$install" ]; then
+            continue
+        else
+            install_version=$install
+            install
+            count_updates+=1
+        fi
+    done 
+
+    if  [ -n "$set_version" ] && [ "$current_version" != "$set_version" ]; then
+        set_nodejs
+    fi
+
+    if [ "$cleanup" = "true" ]; then
+        # Cleanup step: Remove directories that are no longer needed
+        local local_versions=$(find "$node_versions_dir" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | grep -oP '\d+(\.\d+){0,2}')
+        local unique_elements=($(comm -23 <(printf "%s\n" "${local_versions[@]}" | sort -u) <(printf "%s\n" "${new_nodejs_dir[@]}" | sort -u)))
+        for element in "${unique_elements[@]}"; do
+            if [ -d "$node_versions_dir/$element" ]; then
+                rm -rf "$node_versions_dir/$element"
+                echo "Removed directory: $element"
+            fi
+        done
+    fi
+
+    if [ $count_updates -gt 0 ]; then
+        echo "#### Finished Patch - Updates Applied ####"
+    else
+        echo "#### Finished Patch - Everything is Up to Date ####"
+    fi
+
+}
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -i|--install)
+            if [ -n "$2" ]; then
+                install_version="$2"
+                install
+                shift 2
+            else
+                echo "Error: -i/--install option requires a version parameter"
+                exit 2
+            fi
+            ;;
+        -s|--set)
+            if [ -n "$2" ]; then
+                set_version="$2"
+                set_nodejs
+                shift 2
+            else
+                echo "Error: -s/--set option requires a version parameter"
+                exit 2
+            fi
+            ;;
+        -r|--remove)
+            if [ -n "$2" ]; then
+                remove_version="$2"
+                remove
+                shift 2
+            else
+                echo "Error: -s/--set option requires a version parameter"
+                exit 2
+            fi
+            ;;
+        -l|--list)
+            list
+            shift
+            ;;
+        -p|--patch)
+           if [ "$2" = "clean" ]; then
+                cleanup="true"
+                patch
+                shift 2
+            elif [ -z "$2" ]; then
+                patch
+                shift
+            else 
+                echo "Error: Unrecognized parameter '$2'."
+                echo "Usage: nvml -p clean"
+                exit 2
+            fi
+            ;;
+        -h|--help)
+            print_help
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $1"
+            print_help
+            exit 1
+            ;;
+    esac
+done
