@@ -23,7 +23,7 @@ This script is tailored for sysadmins and server environments where managing Nod
 sudo apt purge --auto-remove nodejs
 ```
 
-#### 2) **My favorit path:**
+#### 2) **My favorit path (optimal):**
 
 ```bash
 cd /opt
