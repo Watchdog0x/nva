@@ -35,14 +35,14 @@ sudo git clone https://github.com/Watchdog0x/nvm-light.git && cd nvm-light
 
 #### 4) **Create a symbolic link to the completion script:**
 ```bash
-sudo ln -rs nvml_completion /etc/bash_completion.d/
+sudo ln -rfs nvml_completion /etc/bash_completion.d/
 ```
 > [!NOTE] 
 > The nvml_completion script provides command-line completion for nvml commands, helping you discover available versions and options. After linking, you can use tab completion to explore the available Node.js versions and subcommands.
 
 #### 5) **Create a symbolic link to the nvml:**
 ```bash
-sudo ln -rs nvml /usr/local/bin/
+sudo ln -rfs nvml /usr/local/bin/
 ```
 
 #### 6) **Don't Forget to Source Your Bashrc:**
@@ -52,13 +52,13 @@ source ~/.bashrc
 
 #### 7) **Don't forget to install the preferred Node.js version:**
 ```bash
-sudo nvml -i 18.18.1 -s 18.18.1 -l
+sudo nvml -i 18.18.2 -s 18.18.2 -l
 
-Node.js version 18.18.1 downloaded successfully to nodejs
-Node.js version 18.18.1 extracted successfully
-Node.js version 18.18.1 has been set successfully.
+Node.js version 18.18.2 downloaded successfully to nodejs
+Node.js version 18.18.2 extracted successfully
+Node.js version 18.18.2 has been set successfully.
 Available Node.js versions installed on your system:
-* Node.js 18.18.1 (Running)
+* Node.js 18.18.2 (Running)
 ```
 > [!NOTE] 
 > Use `-i` to install, `-s` to set the Node.js version, and `-l` to list them for checking.
