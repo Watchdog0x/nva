@@ -1,6 +1,5 @@
 # Node Version Manager Light (NVML) 
-![Static Badge](https://img.shields.io/badge/Version-1.0.0-brightgreen?style=for-the-badge&labelColor=black&color=rgb(93%2C%2063%2C%20211))
-
+![Static Badge](https://img.shields.io/badge/Version-1.0.1-brightgreen?style=for-the-badge&labelColor=%23161B22&color=rgb(93%2C%2063%2C%20211))
 
 This script is tailored for sysadmins and server environments where managing Node.js versions at the system level is crucial. Unlike user-based NVM installations that are common for development environments, system-based NVM ensures consistent Node.js versions across all users and applications on the server.
 
