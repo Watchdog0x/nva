@@ -42,27 +42,31 @@ install() {
     if [ -e "$node_versions_dir/$install_version" ]; then
         echo "Node.js version $install_version is already installed on your system."
     else
-        local response_code=$(curl -sLI "https://nodejs.org/download/release/v$install_version/" | grep -i "^HTTP" | awk '{print $2}')
-        if [ "$response_code" -eq 200 ]; then
-            curl -sL "https://nodejs.org/download/release/v$install_version/node-v$install_version-linux-x64.tar.xz" -o "node-v$install_version-linux-x64.tar.xz"
-            if [ $? -eq 0 ]; then
-                echo "Node.js version $install_version downloaded successfully to $node_versions_dir"
-
-                mkdir -p "$node_versions_dir/$install_version"
-
-                tar -xf "node-v$install_version-linux-x64.tar.xz" -C "$node_versions_dir/$install_version" --strip-components=1
-
+        if [ -w "$node_versions_dir" ]; then
+            local response_code=$(curl -sLI "https://nodejs.org/download/release/v$install_version/" | grep -i "^HTTP" | awk '{print $2}')
+            if [ "$response_code" -eq 200 ]; then
+                curl -sL "https://nodejs.org/download/release/v$install_version/node-v$install_version-linux-x64.tar.xz" -o "$node_versions_dir/node-v$install_version-linux-x64.tar.xz"
                 if [ $? -eq 0 ]; then
-                    echo "Node.js version $install_version extracted successfully"
-                    rm -r "node-v$install_version-linux-x64.tar.xz"
+                    echo "Node.js version $install_version downloaded successfully to $node_versions_dir"
+
+                    mkdir -p "$node_versions_dir/$install_version"
+
+                    tar -xf "$node_versions_dir/node-v$install_version-linux-x64.tar.xz" -C "$node_versions_dir/$install_version" --strip-components=1
+
+                    if [ $? -eq 0 ]; then
+                        echo "Node.js version $install_version extracted successfully"
+                        rm -r "$node_versions_dir/node-v$install_version-linux-x64.tar.xz"
+                    else
+                        echo "Failed to extract Node.js version $install_version"
+                    fi
                 else
-                    echo "Failed to extract Node.js version $install_version"
+                    echo "Failed to download Node.js version $install_version"
                 fi
-            else
-                echo "Failed to download Node.js version $install_version"
+            else 
+                echo "The version $install_version doesn't exist"
             fi
-        else 
-            echo "The version $install_version doesn't exist"
+        else
+            echo "Error: You don't have permission on $node_versions_dir"
         fi
     fi
 }
