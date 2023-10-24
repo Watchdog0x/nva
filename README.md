@@ -90,7 +90,8 @@ sudo crontab -e
 **0 0 * * * /path/to/nvm-script/nvml -p >> /var/log/nvml-update.log 2>&1
 ```
 
-**Note:** When using sudo crontab -e to edit the crontab for the root user, you can also add the `clean` option to enable automatic cleanup. Ensure you have the necessary permissions and use this command responsibly.
+> [!NOTE] 
+> When using sudo crontab -e to edit the crontab for the root user, you can also add the `clean` option to enable automatic cleanup. Ensure you have the necessary permissions and use this command responsibly.
 
 
 ## Contributing
