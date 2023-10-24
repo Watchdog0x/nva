@@ -4,6 +4,8 @@
 
 _nvml_completion() {
   local cur prev opts
+  script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+  node_versions_dir="$script_dir/nodejs"
   COMPREPLY=()
   cur="${COMP_WORDS[COMP_CWORD]}"
   prev="${COMP_WORDS[COMP_CWORD-1]}"
@@ -41,11 +43,11 @@ _nvml_completion() {
       return 0
       ;;
     -r|--remove)
-      COMPREPLY=( $(compgen -W "$(find "nodejs" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | grep -oP '\d+(\.\d+){0,2}')" -- ${cur}) )
+      COMPREPLY=( $(compgen -W "$(find "$node_versions_dir" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | grep -oP '\d+(\.\d+){0,2}')" -- ${cur}) )
       return 0
       ;;
     -s|--set)
-      COMPREPLY=( $(compgen -W "$(find "nodejs" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | grep -oP '\d+(\.\d+){0,2}')" -- ${cur}) )
+      COMPREPLY=( $(compgen -W "$(find "$node_versions_dir" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | grep -oP '\d+(\.\d+){0,2}')" -- ${cur}) )
       return 0
       ;;
     -h|--help)
