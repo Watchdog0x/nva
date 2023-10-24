@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-node_versions_dir="nodejs"
+# Get the directory of the script, resolving symbolic links
+script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+
+node_versions_dir="$script_dir/nodejs"
 cleanup="false"
 
 install_version=""
