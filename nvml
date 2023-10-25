@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+script_version="1.1.0"
+
 # Get the directory of the script, resolving symbolic links
 script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 
@@ -10,6 +12,17 @@ install_version=""
 set_version=""
 remove_version=""
 
+if [ ! -d "$node_versions_dir" ]; then
+    if [ -w "$script_dir" ]; then
+        mkdir "$node_versions_dir"
+    else
+        echo "Error: Permission Denied"
+        echo "You don't have the necessary permissions to create the 'nodejs' directory in $script_dir."
+        echo "Please run the command with sudo: sudo nvml"
+        exit 1
+    fi
+fi
+
 check_node_version(){
     if [ -n "$(command -v node)" ]; then
         current_version=$(node --version | grep -oP '\d.*')
@@ -18,6 +31,8 @@ check_node_version(){
 
 print_help() {
     cat <<EOF
+nvml - Node Version Manager Lite (Version $script_version)
+
 Usage: nvml [OPTIONS]
 
 Options:
@@ -33,9 +48,15 @@ Options:
 
   -r, --remove         Remove an installed Node.js version
 
+  -v, --version        Print the version of nvml
+
   -h, --help           Display this help message and exit
 
 EOF
+}
+
+print_version() {
+    echo "nvml - Node Version Manager Lite (Version $script_version)"
 }
 
 install() {
@@ -49,7 +70,7 @@ install() {
                 if [ $? -eq 0 ]; then
                     echo "Node.js version $install_version downloaded successfully to $node_versions_dir"
 
-                    mkdir -p "$node_versions_dir/$install_version"
+                    mkdir "$node_versions_dir/$install_version"
 
                     tar -xf "$node_versions_dir/node-v$install_version-linux-x64.tar.xz" -C "$node_versions_dir/$install_version" --strip-components=1
 
@@ -96,7 +117,7 @@ set_nodejs(){
             ln -srf "$node_versions_dir/$set_version/bin/node" /usr/bin/node
             ln -srf "$node_versions_dir/$set_version/bin/npx" /usr/bin/npx
             ln -srf "$node_versions_dir/$set_version/bin/npm" /usr/bin/npm
-            npm config set prefix /usr/local
+            npm config set prefix /usr/local -g
             echo "Node.js version $set_version has been set successfully."
         else
             echo "Error: Insufficient privileges. Please run with sudo."
@@ -240,6 +261,10 @@ while [[ $# -gt 0 ]]; do
                 echo "Usage: nvml -p clean"
                 exit 2
             fi
+            ;;
+        -v|--version)
+            print_version
+            exit 0
             ;;
         -h|--help)
             print_help
