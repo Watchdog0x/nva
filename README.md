@@ -1,5 +1,5 @@
 # Node Version Manager Light (NVML) 
-![Static Badge](https://img.shields.io/badge/Version-1.0.1-brightgreen?style=for-the-badge&labelColor=%23161B22&color=rgb(93%2C%2063%2C%20211))
+![Static Badge](https://img.shields.io/badge/%20Version-1.1.0-rgb(93%2C%2063%2C%20211)?style=for-the-badge&labelColor=%23161B22)
 
 This script is tailored for sysadmins and server environments where managing Node.js versions at the system level is crucial. Unlike user-based NVM installations that are common for development environments, system-based NVM ensures consistent Node.js versions across all users and applications on the server.
 
@@ -22,9 +22,9 @@ This script is tailored for sysadmins and server environments where managing Nod
 sudo apt purge --auto-remove nodejs
 ```
 
-#### 2) **My favorite path (optional):**
-
+#### 2) **Navigate to your preferred directory:**
 ```bash
+# in my case I will use opt
 cd /opt
 ```
 
@@ -52,29 +52,34 @@ source ~/.bashrc
 
 #### 7) **Don't forget to install the preferred Node.js version:**
 ```bash
-sudo nvml -i 18.18.2 -s 18.18.2 -l
-
-Node.js version 18.18.2 downloaded successfully to nodejs
-Node.js version 18.18.2 extracted successfully
-Node.js version 18.18.2 has been set successfully.
+sudo nvml -i 20.9.0 -s 20.9.0 -l
+```
+Output
+```bash
+Node.js version 20.9.0  downloaded successfully to /opt/nvm-light/nodejs
+Node.js version 20.9.0  extracted successfully
+Node.js version 20.9.0  has been set successfully.
 Available Node.js versions installed on your system:
-* Node.js 18.18.2 (Running)
+* Node.js 20.9.0  (Running)
 ```
 > [!NOTE] 
 > Use `-i` to install, `-s` to set the Node.js version, and `-l` to list them for checking.
 
+>[!IMPORTANT]
+>The global installation path for npm packages (npm install -g) is controlled by the system administrator. The standard prefix is set to /usr/local. Ensure that users have the necessary permissions to install global packages or consider running npm commands with elevated privileges.
 
 ## Usage:
 
 ```bash
-./nvml [OPTIONS]
+nvml [OPTIONS]
 ```
 
 - `-i, --install`: Install a specific Node.js version.
 - `-l, --list`: List available Node.js versions on your system.
 - `-s, --set`: Set the active Node.js version.
-- `-r, --remov`: Remove an installed Node.js version.
+- `-r, --remove`: Remove an installed Node.js version.
 - `-p, --patch`: Update all installed Node.js versions to the latest. Subcommand `clean` removes old versions.
+- `-v, --version`: Print the version of nvml
 - `-h, --help`: Display the help message.
 
 ## Set up Cron Job for Auto-Updates
@@ -86,11 +91,12 @@ sudo crontab -e
 
 #### 2) Add a cron job to automatically update Node.js versions daily At 00:00:
 ```bash
+# Example: Run nvml patch (update) daily at midnight and log the output
 **0 0 * * * /path/to/nvm-script/nvml -p >> /var/log/nvml-update.log 2>&1
 ```
 
 > [!NOTE] 
-> When using sudo crontab -e to edit the crontab for the root user, you can also add the `clean` option to enable automatic cleanup. Ensure you have the necessary permissions and use this command responsibly.
+> When using `sudo crontab -e` to edit the crontab for the root user, you can also add the `clean` option to enable automatic cleanup. Ensure you have the necessary permissions and use this command responsibly.
 
 
 ## Contributing
