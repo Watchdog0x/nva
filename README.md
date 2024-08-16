@@ -1,13 +1,17 @@
 # Node Version Manager Light (NVML)
 ![Static Badge](https://img.shields.io/badge/version-1.2.0-brightgreen?style=flat)
 
-NVML is a lightweight Node.js version manager designed specifically for sysadmins and server environments running Debian-based systems. Unlike user-based NVM installations common in development environments, NVML ensures consistent Node.js versions across all users and applications at the system level.
+NVML (Node Version Manager Light) is a specialized tool designed with system administrators in mind, offering a streamlined approach to managing Node.js versions in server environments.
 
 ## Key Features
 - System-wide Node.js version management
 - Optimized for Debian-based server environments
 - Lightweight and easy to use
 - Automatic update and cleanup capabilities
+- Cached version lookup for faster operations
+- Sysadmin-centric design for server environments
+- Dedicated install and uninstall scripts
+- Bash completion support for improved usability
 
 ## Installation
 
