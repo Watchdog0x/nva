@@ -168,8 +168,10 @@ installing_nvml() {
     ln -rfs /opt/nvm-light/nvml /usr/local/bin/
 
     mkdir -p /opt/nvm-light/nodejs
+    
 
     rm -rf /opt/nvm-light/.git
+    mkdir -p /opt/nvm-light/docs
     rm -f /opt/nvm-light/.gitignore
     rm -f /opt/nvm-light/README.md
     rm -f /opt/nvm-light/install.sh

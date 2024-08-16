@@ -59,6 +59,8 @@ spinner() {
     return $status
 }
 
+trap 'tput cnorm' EXIT
+
 uninstall(){
 
     if [ -d "/usr/share/bash-completion/completions" ]; then
@@ -74,6 +76,7 @@ uninstall(){
     source ~/.bashrc
 
 }
+
 
 farewell_message() {
     echo -e "\n\033[0;33mFarewell, fellow sysadmin.\033[0m"
