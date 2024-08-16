@@ -36,7 +36,7 @@ sudo git clone https://github.com/Watchdog0x/nvm-light.git && cd nvm-light
 #### 4) **Create a symbolic link to the completion script:**
 ```bash
 if [ -d "/usr/share/bash-completion/completions" ]; then
-    sudo ln -rfs nvml_completion /usr/share/bash-completion/completions/
+    sudo ln -rfs nvml_completion /usr/share/bash-completion/completions/nvml
 else
     sudo ln -rfs nvml_completion /etc/bash_completion.d/
 fi
