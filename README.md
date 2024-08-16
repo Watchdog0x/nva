@@ -16,8 +16,9 @@ NVML (Node Version Manager Light) is a specialized tool designed with system adm
 ## Installation
 
 <div align="center">
-  <img src="./docs/install.svg" alt="install nvml">
+  <img src="./docs/install.svg" alt="install nvml" style="max-width: 100%; height: auto;">
 </div>
+
 
 Choose one of the following methods:
 
@@ -104,6 +105,45 @@ wget -qO- https://raw.githubusercontent.com/Watchdog0x/nvm-light/main/uninstall.
 ```bash
 sudo bash /opt/nvm-light/uninstall.sh
 ```
+
+## about 
+NVML stands out as a robust solution for sysadmins who need a reliable, efficient, and fast way to manage Node.js versions across their server infrastructure. By focusing on system-wide management and implementing features like version caching, NVML offers a unique toolset specifically tailored to the needs of server environment maintenance and administration.
+
+### Detailed Feature Breakdown:
+
+1. **System-wide Management**: 
+   - Manages Node.js versions at the system level, ensuring consistency across all users.
+   - Allows easy switching between different Node.js versions for the entire system.
+
+2. **Debian Optimization**: 
+   - Tailored for Debian and its derivatives (e.g., Ubuntu).
+   - Integrates smoothly with Debian-based system management practices.
+
+3. **Lightweight Design**:
+   - Minimizes system overhead.
+   - Ensures quick operations, crucial for server environments.
+
+4. **Automatic Maintenance**:
+   - Features automatic updates to keep Node.js versions current.
+   - Includes cleanup capabilities to manage disk space efficiently.
+
+5. **Cached Version Lookup**:
+   - Implements a caching mechanism for Node.js version information.
+   - Provides significantly faster lookup times for available versions.
+   - Reduces network dependency for version checks.
+
+6. **Sysadmin-Centric Approach**:
+   - Designed with the specific needs of system administrators in mind.
+   - Focuses on stability and consistency in server environments.
+
+7. **Easy Deployment**:
+   - Includes dedicated install and uninstall scripts.
+   - Simplifies the process of setting up and removing NVML.
+
+8. **Enhanced CLI Experience**:
+   - Supports bash completion for faster and more accurate command entry.
+   - Improves overall usability in command-line interfaces.
+
 
 ## Contributing
 We welcome contributions! Please feel free to open issues, submit pull requests, or provide suggestions. Follow our Contributing Guidelines for more information.
