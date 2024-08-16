@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-script_version="1.1.0"
+nvml_version="1.2.0"
 
 # Get the directory of the script, resolving symbolic links
 script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
@@ -31,7 +31,7 @@ check_node_version(){
 
 print_help() {
     cat <<EOF
-nvml - Node Version Manager Lite (Version $script_version)
+nvml - Node Version Manager Lite (Version $nvml_version)
 
 Usage: nvml [OPTIONS]
 
@@ -56,7 +56,7 @@ EOF
 }
 
 print_version() {
-    echo "nvml - Node Version Manager Lite (Version $script_version)"
+    echo "nvml - Node Version Manager Lite (Version $nvml_version)"
 }
 
 install() {
@@ -87,7 +87,7 @@ install() {
                 echo "The version $install_version doesn't exist"
             fi
         else
-            echo "Error: You don't have permission on $node_versions_dir"
+            echo "Error: You don't have permission"
         fi
     fi
 }

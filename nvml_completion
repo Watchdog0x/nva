@@ -1,6 +1,4 @@
-# Make it executable (chmod +x nvml_completion)
-# Create a symbolic link to the completion script in the '/etc/bash_completion.d/' directory. This step requires sudo privileges:
-# sudo ln -sr nvml_completion /etc/bash_completion.d/
+#!/usr/bin/bash
 
 _nvml_completion() {
   local cur prev opts
@@ -9,7 +7,7 @@ _nvml_completion() {
   COMPREPLY=()
   cur="${COMP_WORDS[COMP_CWORD]}"
   prev="${COMP_WORDS[COMP_CWORD-1]}"
-  opts="-i --install -s --set -r --remove -h --help -l --list -p --patch"
+  opts="-i --install -s --set -r --remove -h --help -l --list -p --patch -v, --version "
 
   local config_dir="$HOME/.config/nvml"
   local cache_file="$config_dir/nvml_release_cache.txt"
@@ -25,7 +23,6 @@ _nvml_completion() {
     local time_diff=$((current_time - last_update))
 
     if [ $time_diff -gt $update_interval ]; then
-      # Cache outdated, update it
       releases=$(curl -s https://nodejs.org/download/release/ | grep -oP '^<a href="v\d{1,4}\.\d{1,4}\.\d{1,4}' | grep -oP '\d.*' | uniq)
       echo "$releases" > "$cache_file"
     else
@@ -37,20 +34,52 @@ _nvml_completion() {
     echo "$releases" > "$cache_file"
   fi
 
+
+  get_installed_versions() {
+    if [ -d "$node_versions_dir" ]; then
+      find "$node_versions_dir" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | grep -oP '\d+(\.\d+){0,2}'
+    else
+      echo ""
+    fi
+  }
+
+  # Check if -i or --install is used
+  for ((i=0; i < ${#COMP_WORDS[@]}; i++)); do
+    if [[ "${COMP_WORDS[i]}" == "-i" || "${COMP_WORDS[i]}" == "--install" ]]; then
+      install_version="${COMP_WORDS[i+1]}"
+      break
+    fi
+  done
+
   case "${prev}" in
     -i|--install)
       COMPREPLY=( $(compgen -W "${releases}" -- ${cur}) )
       return 0
       ;;
     -r|--remove)
-      COMPREPLY=( $(compgen -W "$(find "$node_versions_dir" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | grep -oP '\d+(\.\d+){0,2}')" -- ${cur}) )
+      local installed_versions=$(get_installed_versions)
+      COMPREPLY=( $(compgen -W "${installed_versions}" -- ${cur}) )
       return 0
       ;;
     -s|--set)
-      COMPREPLY=( $(compgen -W "$(find "$node_versions_dir" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | grep -oP '\d+(\.\d+){0,2}')" -- ${cur}) )
+      local installed_versions=$(get_installed_versions)
+      if [ -n "$install_version" ]; then
+        # If -i or --install is used, suggest that version
+        COMPREPLY=( $(compgen -W "$install_version" -- ${cur}) )
+      elif [ -n "$installed_versions" ]; then
+        # If there are installed versions, suggest them
+        COMPREPLY=( $(compgen -W "$installed_versions" -- ${cur}) )
+      else
+        # If no installed versions and no -i/--install, suggest from releases
+        COMPREPLY=( $(compgen -W "${releases}" -- ${cur}) )
+      fi
       return 0
       ;;
     -h|--help)
+      COMPREPLY=( $(compgen -W "" -- ${cur}) )
+      return 0
+      ;;
+    -v|--version)
       COMPREPLY=( $(compgen -W "" -- ${cur}) )
       return 0
       ;;
@@ -73,4 +102,3 @@ _nvml_completion() {
 }
 
 complete -F _nvml_completion nvml
-
