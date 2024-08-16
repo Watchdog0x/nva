@@ -23,8 +23,8 @@ sudo apt purge --auto-remove nodejs
 ```
 
 #### 2) **Navigate to your preferred directory:**
+in my case I will use opt
 ```bash
-# in my case I will use opt
 cd /opt
 ```
 
@@ -35,7 +35,11 @@ sudo git clone https://github.com/Watchdog0x/nvm-light.git && cd nvm-light
 
 #### 4) **Create a symbolic link to the completion script:**
 ```bash
-sudo ln -rfs nvml_completion /etc/bash_completion.d/
+if [ -d "/usr/share/bash-completion/completions" ]; then
+    sudo ln -rfs nvml_completion /usr/share/bash-completion/completions/
+else
+    sudo ln -rfs nvml_completion /etc/bash_completion.d/
+fi
 ```
 > [!NOTE] 
 > The nvml_completion script provides command-line completion for nvml commands, helping you discover available versions and options. After linking, you can use tab completion to explore the available Node.js versions and subcommands.
