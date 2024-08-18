@@ -106,7 +106,7 @@ wget -qO- https://raw.githubusercontent.com/Watchdog0x/nvm-light/main/uninstall.
 sudo bash /opt/nvm-light/uninstall.sh
 ```
 
-## about 
+## About 
 NVML stands out as a robust solution for sysadmins who need a reliable, efficient, and fast way to manage Node.js versions across their server infrastructure. By focusing on system-wide management and implementing features like version caching, NVML offers a unique toolset specifically tailored to the needs of server environment maintenance and administration.
 
 ### Detailed Feature Breakdown:
