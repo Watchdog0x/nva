@@ -146,7 +146,7 @@ NVML stands out as a robust solution for sysadmins who need a reliable, efficien
 
 
 ## Contributing
-We welcome contributions! Please feel free to open issues, submit pull requests, or provide suggestions. Follow our Contributing Guidelines for more information.
+We welcome contributions! Please feel free to open issues, submit pull requests, or provide suggestions.
 
 ## License
 This project is licensed under the MIT License.
