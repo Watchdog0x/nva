@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-nvml_version="1.2.0"
+nva_version="1.2.0"
 
 if [ "$EUID" -ne 0 ]; then
     echo -e "\033[0;31mError\033[0m: You don't have permission. Please run with sudo."
@@ -64,14 +64,14 @@ trap 'tput cnorm' EXIT
 uninstall(){
 
     if [ -d "/usr/share/bash-completion/completions" ]; then
-        rm -f /usr/share/bash-completion/completions/nvml
+        rm -f /usr/share/bash-completion/completions/nva
     else
-       rm -f /etc/bash_completion.d/nvml_completion
+       rm -f /etc/bash_completion.d/nva_completion
     fi
 
-    rm -f /usr/local/bin/nvml
+    rm -f /usr/local/bin/nva
 
-    rm -rf /opt/nvm-light/
+    rm -rf /opt/nva/
 
     source ~/.bashrc
 
@@ -80,7 +80,7 @@ uninstall(){
 
 farewell_message() {
     echo -e "\n\033[0;33mFarewell, fellow sysadmin.\033[0m"
-    echo "We hope nvml served your Node.js management needs well."
+    echo "We hope NVA served your Node.js management needs well."
     echo "Your server environment might feel a bit emptier without us."
     echo "If you encountered any issues or have suggestions for improvement,"
     echo "please don't hesitate to open an issue on our GitHub repository."
@@ -90,10 +90,10 @@ farewell_message() {
 
 main() { 
 
-    printf "Uninstall nvml \033[0;32mv%s\033[0m\n\n" "$nvml_version"
+    printf "Uninstall nva \033[0;32mv%s\033[0m\n\n" "$nva_version"
     farewell_message
     
-    spinner "Uninstall nvml" uninstall
+    spinner "Uninstall nva" uninstall
 
     printf "\nUninstalling completed successfully!\n"
 }

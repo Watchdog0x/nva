@@ -1,7 +1,11 @@
-# Node Version Manager Light (NVML)
+<div align="center">
+  <img src="./docs/logo.svg" alt="nva logo" style="max-width: 100%; height: auto;">
+</div>
+
+# Node Version Admin (NVA)
 ![Static Badge](https://img.shields.io/badge/version-1.2.0-brightgreen?style=flat)
 
-NVML (Node Version Manager Light) is a specialized tool designed with system administrators in mind, offering a streamlined approach to managing Node.js versions in server environments.
+NVA (Node Version Admin) is a specialized tool designed with system administrators in mind, offering a streamlined approach to managing Node.js versions in server environments.
 
 ## Key Features
 - System-wide Node.js version management
@@ -16,7 +20,7 @@ NVML (Node Version Manager Light) is a specialized tool designed with system adm
 ## Installation
 
 <div align="center">
-  <img src="./docs/install.svg" alt="install nvml" style="max-width: 100%; height: auto;">
+  <img src="./docs/install.svg" alt="install nva" style="max-width: 100%; height: auto;">
 </div>
 
 
@@ -24,12 +28,12 @@ Choose one of the following methods:
 
 #### 1. Using curl
 ```bash
-curl -o- https://raw.githubusercontent.com/Watchdog0x/nvm-light/main/install.sh | sudo bash
+curl -o- https://raw.githubusercontent.com/Watchdog0x/nva/main/install.sh | sudo bash
 ```
 
 #### 2. Using wget
 ```bash
-wget -qO- https://raw.githubusercontent.com/Watchdog0x/nvm-light/main/install.sh | sudo bash
+wget -qO- https://raw.githubusercontent.com/Watchdog0x/nva/main/install.sh | sudo bash
 ```
 
 ## Usage
@@ -37,12 +41,12 @@ wget -qO- https://raw.githubusercontent.com/Watchdog0x/nvm-light/main/install.sh
 ### First-time setup
 After installation, run:
 ```bash
-sudo nvml -i 20.16.0 -s 20.16.0 -l
+sudo nva -i 20.16.0 -s 20.16.0 -l
 ```
 
 Output:
 ```
-Node.js version 20.16.0 downloaded successfully to /opt/nvm-light/nodejs
+Node.js version 20.16.0 downloaded successfully to /opt/nva/nodejs
 Node.js version 20.16.0 extracted successfully
 Node.js version 20.16.0 has been set successfully.
 Available Node.js versions installed on your system:
@@ -57,7 +61,7 @@ Available Node.js versions installed on your system:
 
 ### Command syntax
 ```bash
-nvml [OPTIONS]
+nva [OPTIONS]
 ```
 
 Options:
@@ -67,7 +71,7 @@ Options:
 - `-r, --remove`: Remove an installed Node.js version
 - `-p, --patch`: Update all installed Node.js versions to the latest
   - Subcommand `clean` removes old versions
-- `-v, --version`: Print the version of NVML
+- `-v, --version`: Print the version of NVA
 - `-h, --help`: Display the help message
 
 ## Automatic Updates
@@ -81,7 +85,7 @@ Set up a cron job for automatic updates:
 
 2. Add a daily update job (runs at midnight):
    ```bash
-   0 0 * * * /path/to/nvm-script/nvml -p >> /var/log/nvml-update.log 2>&1
+   0 0 * * * /path/to/nva-script/nva -p >> /var/log/nva-update.log 2>&1
    ```
 
 > [!NOTE] 
@@ -93,21 +97,21 @@ Choose one of the following methods:
 
 #### 1. Using curl
 ```bash
-curl -o- https://raw.githubusercontent.com/Watchdog0x/nvm-light/main/uninstall.sh | sudo bash
+curl -o- https://raw.githubusercontent.com/Watchdog0x/nva/main/uninstall.sh | sudo bash
 ```
 
 #### 2. Using wget
 ```bash
-wget -qO- https://raw.githubusercontent.com/Watchdog0x/nvm-light/main/uninstall.sh | sudo bash
+wget -qO- https://raw.githubusercontent.com/Watchdog0x/nva/main/uninstall.sh | sudo bash
 ```
 
 #### 3. Local uninstall
 ```bash
-sudo bash /opt/nvm-light/uninstall.sh
+sudo bash /opt/nva/uninstall.sh
 ```
 
 ## About 
-NVML stands out as a robust solution for sysadmins who need a reliable, efficient, and fast way to manage Node.js versions across their server infrastructure. By focusing on system-wide management and implementing features like version caching, NVML offers a unique toolset specifically tailored to the needs of server environment maintenance and administration.
+NVA stands out as a robust solution for sysadmins who need a reliable, efficient, and fast way to manage Node.js versions across their server infrastructure. By focusing on system-wide management and implementing features like version caching, NVA offers a unique toolset specifically tailored to the needs of server environment maintenance and administration.
 
 ### Detailed Feature Breakdown:
 
@@ -138,7 +142,7 @@ NVML stands out as a robust solution for sysadmins who need a reliable, efficien
 
 7. **Easy Deployment**:
    - Includes dedicated install and uninstall scripts.
-   - Simplifies the process of setting up and removing NVML.
+   - Simplifies the process of setting up and removing NVA.
 
 8. **Enhanced CLI Experience**:
    - Supports bash completion for faster and more accurate command entry.

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-nvml_version="1.2.0"
+nva_version="1.2.0"
 
 if [ "$EUID" -ne 0 ]; then
     echo -e "\033[0;31mError\033[0m: You don't have permission. Please run with sudo."
@@ -156,24 +156,24 @@ remove_node() {
     return 0
 }
 
-installing_nvml() {
-    cd /opt/ && git clone https://github.com/Watchdog0x/nvm-light.git
+installing_nva() {
+    cd /opt/ && git clone https://github.com/Watchdog0x/nva.git
 
     if [ -d "/usr/share/bash-completion/completions" ]; then
-        ln -rfs /opt/nvm-light/nvml_completion /usr/share/bash-completion/completions/nvml
+        ln -rfs /opt/nva/nva_completion /usr/share/bash-completion/completions/nva
     else
-        ln -rfs /opt/nvm-light/nvml_completion /etc/bash_completion.d/
+        ln -rfs /opt/nva/nva_completion /etc/bash_completion.d/
     fi
 
-    ln -rfs /opt/nvm-light/nvml /usr/local/bin/
+    ln -rfs /opt/nva/nva /usr/local/bin/
 
-    mkdir -p /opt/nvm-light/nodejs
+    mkdir -p /opt/nva/nodejs
     
-    rm -rf /opt/nvm-light/.git
-    rm -rf /opt/nvm-light/docs
-    rm -f /opt/nvm-light/.gitignore
-    rm -f /opt/nvm-light/README.md
-    rm -f /opt/nvm-light/install.sh
+    rm -rf /opt/nva/.git
+    rm -rf /opt/nva/docs
+    rm -f /opt/nva/.gitignore
+    rm -f /opt/nva/README.md
+    rm -f /opt/nva/install.sh
 
     source ~/.bashrc
 
@@ -181,14 +181,14 @@ installing_nvml() {
 }
 
 main() { 
-    if command -v nvml &> /dev/null; then
-        local installed_version=$(nvml -v | grep Version | awk '{print $NF}' | tr -d '()' )
-        if [[ $installed_version == "$nvml_version" ]]; then
-            printf "NVML version \033[0;32mv%s\033[0m is already installed\n" "$nvml_version"
+    if command -v nva &> /dev/null; then
+        local installed_version=$(nva -v | grep Version | awk '{print $NF}' | tr -d '()' )
+        if [[ $installed_version == "$nva_version" ]]; then
+            printf "nva version \033[0;32mv%s\033[0m is already installed\n" "$nva_version"
             return 0
         fi
     fi
-    printf "Installering nvml \033[0;32mv%s\033[0m\n\n" "$nvml_version"
+    printf "Installering nva \033[0;32mv%s\033[0m\n\n" "$nva_version"
 
     spinner "Checking dependencies" check_dependencies
     
@@ -203,7 +203,7 @@ main() {
     fi 
 
 
-    spinner "Installing nvml" installing_nvml
+    spinner "Installing nva" installing_nva
 
     printf "\nInstallation completed successfully!\n"
 }

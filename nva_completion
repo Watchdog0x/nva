@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-_nvml_completion() {
+_nva_completion() {
   local cur prev opts
   script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
   node_versions_dir="$script_dir/nodejs"
@@ -9,8 +9,8 @@ _nvml_completion() {
   prev="${COMP_WORDS[COMP_CWORD-1]}"
   opts="-i --install -s --set -r --remove -h --help -l --list -p --patch -v, --version "
 
-  local config_dir="$HOME/.config/nvml"
-  local cache_file="$config_dir/nvml_release_cache.txt"
+  local config_dir="$HOME/.config/nva"
+  local cache_file="$config_dir/nva_release_cache.txt"
 
   # Check if the cache needs to be updated
   local update_interval=86400  # Update every 24 hours
@@ -101,4 +101,4 @@ _nvml_completion() {
   return 0
 }
 
-complete -F _nvml_completion nvml
+complete -F _nva_completion nva

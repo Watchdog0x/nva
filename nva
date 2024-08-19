@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-nvml_version="1.2.0"
+nva_version="1.2.0"
 
 # Get the directory of the script, resolving symbolic links
 script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
@@ -18,7 +18,7 @@ if [ ! -d "$node_versions_dir" ]; then
     else
         echo "Error: Permission Denied"
         echo "You don't have the necessary permissions to create the 'nodejs' directory in $script_dir."
-        echo "Please run the command with sudo: sudo nvml"
+        echo "Please run the command with sudo: sudo nva"
         exit 1
     fi
 fi
@@ -31,9 +31,9 @@ check_node_version(){
 
 print_help() {
     cat <<EOF
-nvml - Node Version Manager Lite (Version $nvml_version)
+nva - Node Version Admin (Version $nva_version)
 
-Usage: nvml [OPTIONS]
+Usage: nva [OPTIONS]
 
 Options:
   -i, --install        Install a specific Node.js version
@@ -48,7 +48,7 @@ Options:
 
   -r, --remove         Remove an installed Node.js version
 
-  -v, --version        Print the version of nvml
+  -v, --version        Print the version of nva
 
   -h, --help           Display this help message and exit
 
@@ -56,7 +56,7 @@ EOF
 }
 
 print_version() {
-    echo "nvml - Node Version Manager Lite (Version $nvml_version)"
+    echo "nva - Node Version Manager Lite (Version $nva_version)"
 }
 
 install() {
@@ -106,7 +106,7 @@ list(){
         done
     else
         echo "No Node.js versions found in $node_versions_dir."
-        echo "You may want to install some using the nvml script."
+        echo "You may want to install some using the nva script."
     fi
 
 }
@@ -142,7 +142,7 @@ remove() {
             fi
         else
             echo "Info: Cannot remove the currently running Node.js version."
-            echo "Use 'nvml -s <other_version>' to set another version before removing the running version."
+            echo "Use 'nva -s <other_version>' to set another version before removing the running version."
         fi
     else
         echo "Error: The specified Node.js version ($remove_version) does not exist."
@@ -258,7 +258,7 @@ while [[ $# -gt 0 ]]; do
                 shift
             else 
                 echo "Error: Unrecognized parameter '$2'."
-                echo "Usage: nvml -p clean"
+                echo "Usage: nva -p clean"
                 exit 2
             fi
             ;;
