@@ -28,7 +28,7 @@ Choose one of the following methods:
 
 #### 1. Using curl
 ```bash
-curl -o- https://raw.githubusercontent.com/Watchdog0x/nva/main/install.sh | sudo bash
+curl -so- https://raw.githubusercontent.com/Watchdog0x/nva/main/install.sh | sudo bash
 ```
 
 #### 2. Using wget

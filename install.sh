@@ -175,8 +175,6 @@ installing_nva() {
     rm -f /opt/nva/README.md
     rm -f /opt/nva/install.sh
 
-    source ~/.bashrc
-
     return 0
 }
 

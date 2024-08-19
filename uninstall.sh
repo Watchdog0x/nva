@@ -70,7 +70,7 @@ uninstall(){
     fi
 
     rm -f /usr/local/bin/nva
-
+    rm -rf ~/.config/nva
     rm -rf /opt/nva/
 
     source ~/.bashrc
