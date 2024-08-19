@@ -56,7 +56,7 @@ EOF
 }
 
 print_version() {
-    echo "nva - Node Version Manager Lite (Version $nva_version)"
+    echo "nva - Node Version Admin (Version $nva_version)"
 }
 
 install() {
