@@ -4,6 +4,7 @@
 
 # Node Version Admin (NVA)
 ![Static Badge](https://img.shields.io/badge/version-1.2.0-brightgreen?style=flat)
+![Debian](https://img.shields.io/badge/Debian-D70A53?style=for-the-badge&logo=debian&logoColor=white)
 
 NVA (Node Version Admin) is a specialized tool designed with system administrators in mind, offering a streamlined approach to managing Node.js versions in server environments.
 
