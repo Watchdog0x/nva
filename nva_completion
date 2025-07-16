@@ -53,7 +53,7 @@ _nva_completion() {
 
   case "${prev}" in
     -i|--install)
-      COMPREPLY=( $(compgen -W "${releases}" -- ${cur}) )
+      COMPREPLY=( $(compgen -W "latest ${releases}" -- ${cur}) )
       return 0
       ;;
     -r|--remove)
@@ -88,10 +88,8 @@ _nva_completion() {
       return 0
       ;;
     -p|--patch)
-      if [[ "${cur}" != -* ]]; then
-        COMPREPLY=( $(compgen -W "clean" -- ${cur}) )
-        return 0
-      fi
+      COMPREPLY=( $(compgen -W "" -- ${cur}) )
+      return 0
       ;;
     *)
       ;;

@@ -3,8 +3,12 @@
 </div>
 
 # Node Version Admin (NVA)
-![Static Badge](https://img.shields.io/badge/version-1.2.0-brightgreen?style=flat)
-![Debian](https://img.shields.io/badge/Debian-D70A53?style=for-the-badge&logo=debian&logoColor=white)
+[![GitHub Release](https://img.shields.io/github/v/release/watchdog0x/nva?display_name=release&style=flat-square)](https://github.com/Watchdog0x/nva/releases)
+[![GitHub License](https://img.shields.io/github/license/watchdog0x/nva?style=flat-square)](https://github.com/Watchdog0x/nva/blob/main/LICENSE)
+![Debian](https://img.shields.io/badge/Debian-D70A53?style=for-the-badge&logo=debian&logoColor=white&style=flat-square)
+
+
+[![GitHub Release](https://img.shields.io/github/v/release/Watchdog0x/jLink)](https://github.com/Watchdog0x/jLink/releases)
 
 NVA (Node Version Admin) is a specialized tool designed with system administrators in mind, offering a streamlined approach to managing Node.js versions in server environments.
 
@@ -42,16 +46,16 @@ wget -qO- https://raw.githubusercontent.com/Watchdog0x/nva/main/install.sh | sud
 ### First-time setup
 After installation, run:
 ```bash
-sudo nva -i 20.16.0 -s 20.16.0 -l
+sudo nva -i latest -s latest -l
 ```
 
 Output:
 ```
-Node.js version 20.16.0 downloaded successfully to /opt/nva/nodejs
-Node.js version 20.16.0 extracted successfully
-Node.js version 20.16.0 has been set successfully.
+Node.js version 24.4.1 downloaded successfully to /home/zero/nva/nodejs
+Node.js version 24.4.1 extracted successfully
+Node.js version 24.4.1 has been set successfully.
 Available Node.js versions installed on your system:
-* Node.js 20.16.0 (Running)
+* Node.js 24.4.1 (Running)
 ```
 
 > [!NOTE] 
@@ -61,19 +65,28 @@ Available Node.js versions installed on your system:
 > The global installation path for npm packages (npm install -g) is /usr/local. Ensure users have necessary permissions or run npm commands with elevated privileges.
 
 ### Command syntax
+
 ```bash
-nva [OPTIONS]
-```
+Usage: nva [OPTIONS]
 
 Options:
-- `-i, --install`: Install a specific Node.js version
-- `-l, --list`: List available Node.js versions on your system
-- `-s, --set`: Set the active Node.js version
-- `-r, --remove`: Remove an installed Node.js version
-- `-p, --patch`: Update all installed Node.js versions to the latest
-  - Subcommand `clean` removes old versions
-- `-v, --version`: Print the version of NVA
-- `-h, --help`: Display the help message
+  -i, --install        Install a specific Node.js version
+
+  -l, --list           List available Node.js versions on your system
+
+  -s, --set            Set the active Node.js version
+
+  -p, --patch          Update all installed Node.js versions to the latest patch.
+                       This automatically removes old versions and updates the patch number.
+
+  -r, --remove         Remove an installed Node.js version
+
+  -v, --version        Print the version of nva
+
+  -h, --help           Display this help message and exit
+
+
+```
 
 ## Automatic Updates
 
@@ -86,11 +99,8 @@ Set up a cron job for automatic updates:
 
 2. Add a daily update job (runs at midnight):
    ```bash
-   0 0 * * * /path/to/nva-script/nva -p >> /var/log/nva-update.log 2>&1
+   0 0 * * * /opt/nva/nva -p >> /var/log/nva-update.log 2>&1
    ```
-
-> [!NOTE] 
-> When using `sudo crontab -e`, you can add the `clean` option for automatic cleanup. Use responsibly with appropriate permissions.
 
 ## Uninstallation
 

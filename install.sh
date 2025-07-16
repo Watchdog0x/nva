@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-nva_version="1.2.0"
+nva_version="1.3.0"
 
 if [ "$EUID" -ne 0 ]; then
     echo -e "\033[0;31mError\033[0m: You don't have permission. Please run with sudo."
@@ -69,7 +69,7 @@ check_dependencies() {
     }
 
     local temp_to_install=()
-    for cmd in awk grep uniq tar curl; do
+    for cmd in awk grep uniq tar curl git; do
         if ! command_exists "$cmd"; then
             temp_to_install+=("$cmd")
         fi
