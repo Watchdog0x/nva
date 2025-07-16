@@ -5,10 +5,7 @@
 # Node Version Admin (NVA)
 [![GitHub Release](https://img.shields.io/github/v/release/watchdog0x/nva?display_name=release&style=flat-square)](https://github.com/Watchdog0x/nva/releases)
 [![GitHub License](https://img.shields.io/github/license/watchdog0x/nva?style=flat-square)](https://github.com/Watchdog0x/nva/blob/main/LICENSE)
-![Debian](https://img.shields.io/badge/Debian-D70A53?style=for-the-badge&logo=debian&logoColor=white&style=flat-square)
 
-
-[![GitHub Release](https://img.shields.io/github/v/release/Watchdog0x/jLink)](https://github.com/Watchdog0x/jLink/releases)
 
 NVA (Node Version Admin) is a specialized tool designed with system administrators in mind, offering a streamlined approach to managing Node.js versions in server environments.
 
